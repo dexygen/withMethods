@@ -2,11 +2,15 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>with-ref, a React HOC</title>
-    <link rel="stylesheet" href="./ui/css/with-ref.css">
+    <title>withParent: an HOC/library</title>
+    <link rel="stylesheet" href="./ui/css/with-parent-hoc.css">
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>   
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="./ui/js/lib/ajax.lib.js"></script>
     <script src="./ui/js/lib/babel.min.js"></script>
+    <script src="./ui/js/greeting.js" type="text/babel"></script>
+    <script src="./ui/js/greetee.js" type="text/babel"></script>
+    <script src="./ui/js/salutation.js" type="text/babel"></script>
   </head>
   <body>
     <div class="gutter">&nbsp;</div>
@@ -15,7 +19,7 @@
     
     <script type="text/babel">
       ReactDOM.render(
-        <div>Hello, with-ref</div>,
+        <Salutation />,
         document.getElementById('app-content')
       );
     </script>
