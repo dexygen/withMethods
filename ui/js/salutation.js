@@ -1,4 +1,16 @@
 class Salutation extends React.Component {
+  componentDidMount() {
+    withMethods.beforeRegistration(this);
+  }
+  
+  foo() {
+    console.log('foo');
+  }
+  
+  bar() {
+    console.log('bar');
+  }
+  
   render() {
     return (
         <div>

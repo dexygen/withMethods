@@ -7,6 +7,7 @@ class Greetee extends React.Component {
   }
   
   componentDidMount() {
+    setTimeout(() => {withMethods.registry.Salutation.foo()});
     this.setState({greetee: this.props.greetee + "!".repeat(this.props.excitement)})
   }
   
