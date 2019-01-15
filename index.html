@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>withParent: an HOC/library</title>
-    <link rel="stylesheet" href="./ui/css/with-parent-hoc.css">
+    <title>withMethod: an HOC/library</title>
+    <link rel="stylesheet" href="./ui/css/with-method-hoc.css">
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="./ui/js/lib/babel.min.js"></script>
-    <script src="./ui/js/lib/withParent.lib.js" type="text/babel"></script>
+    <script src="./ui/js/lib/withMethodHOC.js" type="text/babel"></script>
     <script src="./ui/js/greeting.js" type="text/babel"></script>
     <script src="./ui/js/greetee.js" type="text/babel"></script>
     <script src="./ui/js/salutation.js" type="text/babel"></script>
@@ -18,10 +18,10 @@
     <div class="gutter">&nbsp;</div>
     
     <script type="text/babel">      
-      const SalutationWithParent = withParent.HOC(Salutation, this);
+      const SalutationWithMethod = withMethod.HOC(Salutation, this);
       
       ReactDOM.render(
-        <SalutationWithParent />,
+        <SalutationWithMethod />,
         document.getElementById('app-content')
       );
     </script>

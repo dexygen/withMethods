@@ -1,12 +1,12 @@
 class Salutation extends React.Component {
   render() {
-    const GreetingWithParent = withParent.HOC(Greeting, this);
-    const GreeteeWithParent = withParent.HOC(Greetee, this);
+    const GreetingWithMethod = withMethod.HOC(Greeting, this);
+    const GreeteeWithMethod = withMethod.HOC(Greetee, this);
     
     return (
         <div>
-          <GreetingWithParent greeting={'hello'} suffix={'://'} />
-          <GreeteeWithParent greetee="world" excitement={0} />
+          <GreetingWithMethod greeting={'hello'} suffix={'://'} />
+          <GreeteeWithMethod greetee="world" excitement={0} />
         </div>
     );
   }
