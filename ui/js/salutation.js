@@ -4,7 +4,8 @@ class Salutation extends React.Component {
   }
   
   foo() {
-    console.log('foo');
+    // this seems to be propertly bound by withMethods, i.e. setState is accessible
+    console.log('foo', this, this.setState); 
   }
   
   bar() {

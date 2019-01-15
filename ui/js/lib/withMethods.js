@@ -1,49 +1,55 @@
-let $WM, withMethods;
-
-$WM = withMethods = {
-  nonRootProtos: {},
-  defaultNames: [],
-  registry: {}
-};
-
-$WM.registerRoot = (root) => {
-  $WM.defaultNames = Object.getOwnPropertyNames(Object.getPrototypeOf(root));
-  registerAll();
-}
-
-function registerAll() {
-  for (let cmpName in $WM.nonRootProtos) {
-    let proto = $WM.nonRootProtos[cmpName];
-    let protoNames = Object.getOwnPropertyNames(proto);
-    let uniqueProtoNames = protoNames.filter(nm => !$WM.defaultNames.includes(nm));
-    let registrableFns = uniqueProtoNames.reduce((fns, uName) => {
-      if (typeof proto[uName] === 'function') {
-        fns[uName] = proto[uName];
-      }
-      return fns;
-    }, {});
-    if (Object.getOwnPropertyNames(registrableFns).length > 0) {
-      $WM.registry[cmpName] = registrableFns;
+const withMethods = (function() {
+  let registry = {};
+  let wm = {
+    nonRootProtos: {},
+    defaultNames: [],
+  };
+  
+  wm.rootHOC = (ComponentWithMethod, Method) => class extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { data: null };
     }
-  }
-}
 
-$WM.beforeRegistration = (component) => {
-  $WM.nonRootProtos[component.constructor.name] = Object.getPrototypeOf(component);
-}
+    componentDidMount() {
+      wm.registerRoot(this);
+      wm.rootHOC = null; // So it cannot be used other than by one "root" component
+    }
 
-$WM.rootHOC = (ComponentWithMethod, Method) => class extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: null };
+    render() {
+      return <ComponentWithMethod {...this.props} data={this.state.data} />;
+    }
+  };
+  
+  wm.registerRoot = (root) => {
+    wm.defaultNames = Object.getOwnPropertyNames(Object.getPrototypeOf(root));
+    registerOthers();
+  };
+
+  function registerOthers() {
+    for (let cmpName in wm.nonRootProtos) {
+      let proto = wm.nonRootProtos[cmpName];
+      let protoNames = Object.getOwnPropertyNames(proto);
+      let uniqueProtoNames = protoNames.filter(nm => !wm.defaultNames.includes(nm));
+      let registrableFns = uniqueProtoNames.reduce((fns, uName) => {
+        if (typeof proto[uName] === 'function') {
+          fns[uName] = proto[uName].bind(proto);
+        }
+        return fns;
+      }, {});
+      if (Object.getOwnPropertyNames(registrableFns).length > 0) {
+        registry[cmpName] = registrableFns;
+      }
+    }
+  };
+  
+  wm.beforeRegistration = (component) => {
+    wm.nonRootProtos[component.constructor.name] = Object.getPrototypeOf(component);
+  };
+  
+  wm.forCmpName = function(cmpName) {
+    return registry[cmpName];
   }
   
-  componentDidMount() {
-    $WM.registerRoot(this);
-    $WM.rootHOC = null; // So it cannot be used other than by one "root" component
-  }
-  
-  render() {
-    return <ComponentWithMethod {...this.props} data={this.state.data} />;
-  }
-}
+  return wm;
+})();
