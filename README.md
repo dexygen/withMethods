@@ -9,7 +9,7 @@ Components express their intent to register methods as follows:
       withMethods.beforeRegistration(this);
     }
     
-It entails a sort of pre-registration as the actual entries are not put into the registry until the root element calls `registerRoot`.  This is so that all other components will have been able to pre-register, as the root component will be the last to mount.
+It entails a sort of pre-registration as the actual entries are not put into the registry until the root element calls `registerRoot` (this is done from the `componentDidMount` method of `rootHOC`).  This is so that all other components will have been able to pre-register, as the root component will be the last to mount.
 
 The root component is the only one that will use the HOC, in a manner such as the following:
 
