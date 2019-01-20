@@ -1,7 +1,7 @@
 const withMethods = (function() {
   let registry = {};
   let wm = {
-    nonRootProtos: {},
+    nonRootComponents: {},
     defaultNames: [],
   };
   
@@ -27,13 +27,14 @@ const withMethods = (function() {
   };
 
   function registerOthers() {
-    for (let cmpName in wm.nonRootProtos) {
-      let proto = wm.nonRootProtos[cmpName];
+    for (let cmpName in wm.nonRootComponents) {
+      let component = wm.nonRootComponents[cmpName];
+      let proto = Object.getPrototypeOf(component);
       let protoNames = Object.getOwnPropertyNames(proto);
       let uniqueProtoNames = protoNames.filter(nm => !wm.defaultNames.includes(nm));
       let registrableFns = uniqueProtoNames.reduce((fns, uName) => {
         if (typeof proto[uName] === 'function') {
-          fns[uName] = proto[uName].bind(proto);
+          fns[uName] = proto[uName].bind(component);
         }
         return fns;
       }, {});
@@ -44,7 +45,7 @@ const withMethods = (function() {
   };
   
   wm.beforeRegistration = (component) => {
-    wm.nonRootProtos[component.constructor.name] = Object.getPrototypeOf(component);
+    wm.nonRootComponents[component.constructor.name] = component;
   };
   
   wm.forCmpName = function(cmpName) {
